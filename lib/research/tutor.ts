@@ -869,4 +869,195 @@ export async function structuredFeedback(args: {
     grounded: boolean,
     refusalReason: string | null = null,
   ): StructuredFeedback => ({
-    whatWas
+    whatWasCorrect: deterministicWhatWasCorrect(attempt),
+    whereReasoningWeakened: deterministicWeakness(attempt, facts),
+    howIndependently: independenceLine,
+    assistanceOveruse: overuseLine,
+    nextStrategy: deterministicNextStrategy(item, attempt),
+    counterExplanation: counterExplanationFor(grounded),
+    grounded,
+    refused: refusalReason !== null,
+    refusalReason,
+  });
+
+  if (!facts.usable) {
+    return deterministic(
+      false,
+      "No verified key is stored for this item, so the diagnosis is withheld rather than guessed.",
+    );
+  }
+
+  const system = [
+    "You phrase three parts of a fixed feedback schema inside a learning tool.",
+    "Correctness has already been graded deterministically against a verified key — you never re-judge it, you explain against it.",
+    "Feedback is about the task and the working, never about the person: no praise, no character, no ability.",
+    'Reply with JSON only: {"whatWasCorrect": string, "whereReasoningWeakened": string, "nextStrategy": string, "counterExplanation": string}.',
+    "Each field is one or two sentences, under 35 words. Never state the final answer unless the worked solution was already released.",
+    "counterExplanation says plainly why this reading of their work could be wrong.",
+    VOICE,
+  ].join(" ");
+
+  const user = [
+    itemBrief(item, facts),
+    `Graded outcome: ${attempt.outcome}. Attempts: ${attempt.attemptsMade}. Hints: ${attempt.hintsRequested}. Highest help reached: ${attempt.maxHelpReached}. Worked solution released: ${attempt.solutionRevealed}.`,
+    `Their final answer:\n${attempt.finalAnswer}`,
+    attempt.chain && attempt.chain.length > 0
+      ? `Attempt chain:\n${chainBrief(attempt.chain)}`
+      : "Attempt chain: not recorded.",
+    "Write the three fields and the counter-explanation.",
+  ].join("\n\n");
+
+  const parsed = parseJson(await ask(system, user, 700));
+  if (!parsed) return deterministic(true);
+
+  const whatWasCorrect = scalarText(parsed.whatWasCorrect);
+  const whereReasoningWeakened = scalarText(parsed.whereReasoningWeakened);
+  const nextStrategy = scalarText(parsed.nextStrategy);
+  if (!whatWasCorrect || !whereReasoningWeakened || !nextStrategy) return deterministic(true);
+
+  // If any generated field would leak the answer before the solution gate
+  // opened, the whole generated set is dropped (B4, I3).
+  if (!attempt.solutionRevealed) {
+    const leaked = [whatWasCorrect, whereReasoningWeakened, nextStrategy].some((field) =>
+      leaksAnswer(field, facts),
+    );
+    if (leaked) return deterministic(true);
+  }
+
+  return {
+    whatWasCorrect: clip(whatWasCorrect, 40),
+    whereReasoningWeakened: clip(whereReasoningWeakened, 40),
+    howIndependently: independenceLine,
+    assistanceOveruse: overuseLine,
+    nextStrategy: clip(nextStrategy, 40),
+    counterExplanation: clip(scalarText(parsed.counterExplanation) ?? counterExplanationFor(true), 45),
+    grounded: true,
+    refused: false,
+    refusalReason: null,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// N9 / C4 — scoring an explain-it-back
+// ---------------------------------------------------------------------------
+
+// Word-boundary matched: "also" must not count as the causal "so".
+const CAUSAL = [
+  /\bbecause\b/,
+  /\bsince\b/,
+  /\bso\b/,
+  /\btherefore\b/,
+  /\bwhich means\b/,
+  /\bthat means\b/,
+  /\bas a result\b/,
+  /\bif\b/,
+];
+const SEQUENCE = [/\bfirst\b/, /\bnext\b/, /\bthen\b/, /\bafter\b/, /\bfinally\b/, /\blast\b/, /\bstep\b/];
+
+const DETERMINISTIC_MAX = 60;
+const JUDGEMENT_MAX = 40;
+
+/**
+ * Scores a self-explanation 0–100 against a fixed rubric (Bisra et al. 2018,
+ * g=0.55). Sixty points are deterministic structure and coverage; the model may
+ * award the last forty for how well the explanation accounts for the verified
+ * route. The model never judges whether the item itself was answered correctly
+ * (I6), and the score still works with no model at all.
+ */
+export async function scoreSelfExplanation(args: {
+  item: TutorItem;
+  answerKey: unknown;
+  explanation: string;
+}): Promise<SelfExplanationScore> {
+  const { item, answerKey, explanation } = args;
+  const facts = readKey(answerKey, item);
+  const text = explanation.trim();
+  const lower = text.toLowerCase();
+  const count = wordCount(text);
+
+  const detail = count === 0 ? 0 : count < 8 ? 0 : count < 20 ? 8 : 15;
+  const causalHits = CAUSAL.filter((marker) => marker.test(lower)).length;
+  const causal = causalHits === 0 ? 0 : causalHits === 1 ? 9 : 15;
+
+  const explanationWords = new Set(words(text));
+  const wanted = facts.terms.slice(0, 8);
+  const matched = wanted.filter((term) => explanationWords.has(term)).length;
+  const coverage = wanted.length === 0 ? 0 : Math.round((20 * matched) / Math.min(wanted.length, 6));
+  const coverageScore = Math.min(20, coverage);
+
+  const sequenceHits = SEQUENCE.filter((marker) => marker.test(lower)).length;
+  const sequence = sequenceHits === 0 ? 0 : sequenceHits === 1 ? 5 : 10;
+
+  const deterministic = detail + causal + coverageScore + sequence;
+
+  let judgement = Math.round((deterministic / DETERMINISTIC_MAX) * (JUDGEMENT_MAX * 0.8));
+  let modelScored = false;
+  let judgementNote = "Scored from the rubric alone — no model judgement was available.";
+
+  if (count >= 5 && facts.usable) {
+    const system = [
+      "You award 0 to 40 points for how well a student's explanation accounts for a verified solution route.",
+      "You are NOT judging whether the item was answered correctly — that is graded elsewhere and is none of your business here.",
+      "Judge only the explanation: does it say why the steps work, in their own words, without contradicting the key?",
+      "0 = says nothing about why. 20 = the right idea, thin. 40 = the mechanism, stated correctly in their own words.",
+      "Reply with the number alone. No words, no punctuation.",
+      VOICE,
+    ].join(" ");
+    const user = [
+      itemBrief(item, facts),
+      `The student's explanation:\n${text}`,
+      "Award the points.",
+    ].join("\n\n");
+    const raw = await ask(system, user, 20);
+    const parsedNumber = raw ? Number.parseInt(raw.replace(/[^0-9-]/g, ""), 10) : Number.NaN;
+    if (Number.isFinite(parsedNumber)) {
+      judgement = Math.min(JUDGEMENT_MAX, Math.max(0, parsedNumber));
+      modelScored = true;
+      judgementNote = "Judged against the verified route, not against your answer.";
+    }
+  } else if (count < 5) {
+    judgement = 0;
+    judgementNote = "Too short to judge against the route.";
+  }
+
+  const rubric: RubricLine[] = [
+    {
+      key: "detail",
+      label: "Enough detail to follow",
+      max: 15,
+      awarded: detail,
+      note: `${count} word${count === 1 ? "" : "s"}.`,
+    },
+    {
+      key: "causal",
+      label: "Says why, not just what",
+      max: 15,
+      awarded: causal,
+      note: causalHits === 0 ? "No causal link stated." : `${causalHits} causal link${causalHits === 1 ? "" : "s"}.`,
+    },
+    {
+      key: "coverage",
+      label: "Uses the ideas this item turns on",
+      max: 20,
+      awarded: coverageScore,
+      note: wanted.length === 0 ? "No key terms recorded for this item." : `${matched} of ${Math.min(wanted.length, 6)} key terms.`,
+    },
+    {
+      key: "sequence",
+      label: "Puts the steps in order",
+      max: 10,
+      awarded: sequence,
+      note: sequenceHits === 0 ? "No ordering words." : `${sequenceHits} ordering word${sequenceHits === 1 ? "" : "s"}.`,
+    },
+    {
+      key: "judgement",
+      label: "Accounts for the verified route",
+      max: JUDGEMENT_MAX,
+      awarded: judgement,
+      note: judgementNote,
+    },
+  ];
+
+  const score = Math.min(100, Math.max(0, rubric.reduce((sum, line) => sum + line.awarded, 0)));
+  return { score, rubric, modelScored };
+}

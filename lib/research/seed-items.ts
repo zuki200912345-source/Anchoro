@@ -848,4 +848,883 @@ const INPUTS: SeedItemInput[] = [
     skill: "separation-techniques",
     yearGroup: "Y9",
     difficulty: 3,
-    stem: "Which method separates a diss
+    stem: "Which method separates a dissolved solid from its solution?",
+    answerKey: { type: "choice", index: 1 },
+    distractors: ["Filtration", "Crystallisation", "Chromatography", "Decanting"],
+    workedSolution:
+      "A dissolved solid passes straight through filter paper. Evaporating the solvent leaves the solid behind as crystals, so crystallisation is the method.",
+    misconceptions: {
+      filtration_assumed:
+        "Choosing filtration assumes the solid is undissolved; a dissolved solid passes through the paper.",
+    },
+    canonicalAnswer: "Crystallisation",
+    nearMissAnswer: "Filtration",
+  },
+  {
+    ref: "chem-moles-1",
+    kind: "reasoning",
+    subject: "chemistry",
+    topic: "moles",
+    skill: "mole-calculations",
+    yearGroup: "Y10",
+    difficulty: 5,
+    stem: "Give the number of moles in 8.0 g of magnesium oxide, MgO. Use Mr = 40.",
+    answerKey: { type: "numeric", value: 0.2, tolerance: 0.005, unit: "mol" },
+    workedSolution: "Moles are mass divided by Mr: 8.0 divided by 40 is 0.2 mol.",
+    misconceptions: {
+      multiplied_instead: "Answering 320 multiplies mass by Mr instead of dividing.",
+    },
+    canonicalAnswer: "0.2",
+    nearMissAnswer: "320",
+  },
+  {
+    ref: "chem-moles-transfer-1",
+    kind: "transfer",
+    subject: "chemistry",
+    topic: "moles",
+    skill: "mole-calculations",
+    yearGroup: "Y10",
+    difficulty: 7,
+    variantOfRef: "chem-moles-1",
+    stem: "A tablet contains 0.50 g of calcium carbonate, CaCO3, with Mr = 100. Give the number of moles of calcium carbonate in the tablet.",
+    answerKey: { type: "numeric", value: 0.005, tolerance: 0.00005, unit: "mol" },
+    workedSolution: "Moles are mass divided by Mr: 0.50 divided by 100 is 0.005 mol.",
+    misconceptions: {
+      decimal_slipped: "Answering 0.05 slips one decimal place; 0.50 divided by 100 is 0.005.",
+    },
+    canonicalAnswer: "0.005",
+    nearMissAnswer: "0.05",
+  },
+  {
+    ref: "chem-percentage-yield-1",
+    kind: "reasoning",
+    subject: "chemistry",
+    topic: "yield",
+    skill: "percentage-yield",
+    yearGroup: "Y10",
+    difficulty: 5,
+    stem: "A reaction has a theoretical yield of 25.0 g and produces 18.0 g of product. Give the percentage yield.",
+    answerKey: { type: "numeric", value: 72, tolerance: 0.05 },
+    workedSolution:
+      "Percentage yield is actual divided by theoretical, times 100: 18.0 divided by 25.0 x 100 = 72.",
+    misconceptions: {
+      fraction_inverted: "Answering 139 divides theoretical by actual; the actual mass goes on top.",
+    },
+    canonicalAnswer: "72",
+    nearMissAnswer: "139",
+  },
+  {
+    ref: "chem-ionic-formula-1",
+    kind: "retrieval",
+    subject: "chemistry",
+    topic: "bonding",
+    skill: "ionic-bonding",
+    yearGroup: "Y10",
+    difficulty: 4,
+    stem: "Give the formula of the ionic compound formed between magnesium and chlorine.",
+    answerKey: { type: "exact", value: "MgCl2" },
+    workedSolution:
+      "Magnesium forms a 2+ ion and chlorine forms a 1- ion. Two chloride ions balance one magnesium ion, giving MgCl2.",
+    misconceptions: {
+      charges_unbalanced:
+        "Answering MgCl leaves the charges unbalanced; the 2+ on magnesium needs two chloride ions.",
+    },
+    canonicalAnswer: "MgCl2",
+    nearMissAnswer: "MgCl",
+  },
+  {
+    ref: "chem-empirical-formula-1",
+    kind: "reasoning",
+    subject: "chemistry",
+    topic: "formulae",
+    skill: "empirical-formula",
+    yearGroup: "Y11",
+    difficulty: 6,
+    stem: "A compound contains 2.4 g of carbon and 0.6 g of hydrogen. Using Ar values of 12 for carbon and 1 for hydrogen, give its empirical formula.",
+    answerKey: { type: "exact", value: "CH3" },
+    workedSolution:
+      "Divide each mass by its Ar: carbon gives 2.4 divided by 12 = 0.2 mol and hydrogen gives 0.6 divided by 1 = 0.6 mol. Dividing both by the smaller gives a ratio of 1 to 3, so the empirical formula is CH3.",
+    misconceptions: {
+      mass_ratio_used: "Answering C4H uses the ratio of masses; divide each mass by its Ar first.",
+    },
+    canonicalAnswer: "CH3",
+    nearMissAnswer: "C4H",
+  },
+  {
+    ref: "chem-titration-1",
+    kind: "reasoning",
+    subject: "chemistry",
+    topic: "titration",
+    skill: "titration-calculation",
+    yearGroup: "Y11",
+    difficulty: 7,
+    stem: "25.0 cm^3 of 0.100 mol/dm^3 sodium hydroxide is neutralised by 20.0 cm^3 of hydrochloric acid. The reaction is 1 to 1. Give the concentration of the acid in mol/dm^3.",
+    answerKey: { type: "numeric", value: 0.125, tolerance: 0.0005, unit: "mol/dm^3" },
+    workedSolution:
+      "Moles of sodium hydroxide are 0.0250 x 0.100 = 0.00250 mol. The ratio is 1 to 1, so the acid supplies 0.00250 mol as well. Its concentration is 0.00250 divided by 0.0200 = 0.125 mol/dm^3.",
+    misconceptions: {
+      volumes_swapped:
+        "Answering 0.08 divides by the wrong volume; the acid's moles go over the acid's volume.",
+    },
+    canonicalAnswer: "0.125",
+    nearMissAnswer: "0.08",
+  },
+  {
+    ref: "chem-rates-explain-1",
+    kind: "reasoning",
+    subject: "chemistry",
+    topic: "rates of reaction",
+    skill: "rates-collision-theory",
+    yearGroup: "Y11",
+    difficulty: 6,
+    stem: "Explain why raising the temperature increases the rate of a chemical reaction. Write two or three sentences.",
+    answerKey: {
+      type: "rubric",
+      passMark: 0.6,
+      criteria: [
+        {
+          id: "collision_frequency",
+          weight: 1,
+          keywords: [
+            "collide more often",
+            "more collisions",
+            "collision frequency",
+            "collide more frequently",
+            "more frequent collisions",
+          ],
+        },
+        {
+          id: "particle_speed",
+          weight: 1,
+          keywords: [
+            "move faster",
+            "moving faster",
+            "more kinetic energy",
+            "greater kinetic energy",
+            "particles speed up",
+          ],
+        },
+        {
+          id: "activation_energy",
+          weight: 1,
+          keywords: ["activation energy", "enough energy to react", "sufficient energy"],
+        },
+      ],
+    },
+    workedSolution:
+      "At a higher temperature the particles have more kinetic energy, so they move faster and collide more often. More importantly, a greater proportion of those collisions have at least the activation energy, so more of them are successful.",
+    misconceptions: {
+      collisions_only:
+        "Saying only that particles collide more often misses the larger effect: more collisions now reach the activation energy.",
+    },
+    canonicalAnswer:
+      "The particles move faster, so they collide more often, and more of those collisions have at least the activation energy.",
+    nearMissAnswer: "The mixture gets hotter and the reaction looks different.",
+  },
+  {
+    ref: "chem-ph-1",
+    kind: "reasoning",
+    subject: "chemistry",
+    topic: "acids and bases",
+    skill: "acid-base-ph",
+    yearGroup: "Y12",
+    difficulty: 6,
+    stem: "Give the pH of a 0.010 mol/dm^3 solution of a strong monoprotic acid.",
+    answerKey: { type: "numeric", value: 2 },
+    workedSolution:
+      "A strong monoprotic acid fully dissociates, so the hydrogen ion concentration is 0.010 mol/dm^3. pH is minus the log to base 10 of that, which is 2.",
+    misconceptions: {
+      sign_dropped: "Answering -2 leaves out the minus sign in the pH definition.",
+    },
+    canonicalAnswer: "2",
+    nearMissAnswer: "-2",
+  },
+  {
+    ref: "chem-electrolysis-1",
+    kind: "reasoning",
+    subject: "chemistry",
+    topic: "electrolysis",
+    skill: "electrolysis",
+    yearGroup: "Y12",
+    difficulty: 6,
+    stem: "Molten lead bromide is electrolysed. Name the product formed at the cathode.",
+    answerKey: { type: "exact", value: "lead", alternates: ["pb", "lead metal", "molten lead"] },
+    workedSolution:
+      "Positive ions move to the cathode. Lead ions gain electrons there and form lead metal.",
+    misconceptions: {
+      electrodes_swapped:
+        "Answering bromine names the product at the anode; positive ions move to the cathode.",
+    },
+    canonicalAnswer: "lead",
+    nearMissAnswer: "bromine",
+  },
+  {
+    ref: "chem-alkane-formula-1",
+    kind: "retrieval",
+    subject: "chemistry",
+    topic: "organic chemistry",
+    skill: "organic-nomenclature",
+    yearGroup: "Y13",
+    difficulty: 6,
+    stem: "Give the molecular formula of butane.",
+    answerKey: { type: "exact", value: "C4H10" },
+    workedSolution:
+      "Butane has four carbon atoms, and alkanes follow CnH2n+2, so the formula is C4H10.",
+    misconceptions: {
+      alkene_formula_used: "Answering C4H8 uses the alkene formula CnH2n; alkanes are CnH2n+2.",
+    },
+    canonicalAnswer: "C4H10",
+    nearMissAnswer: "C4H8",
+  },
+  {
+    ref: "chem-equilibrium-1",
+    kind: "reasoning",
+    subject: "chemistry",
+    topic: "equilibrium",
+    skill: "equilibrium-le-chatelier",
+    yearGroup: "Y13",
+    difficulty: 8,
+    stem: "Nitrogen and hydrogen react reversibly to form ammonia: N2 + 3H2 gives 2NH3, and the forward reaction is exothermic. State and explain the effect of raising the pressure on the yield of ammonia.",
+    answerKey: {
+      type: "rubric",
+      passMark: 0.6,
+      criteria: [
+        {
+          id: "direction",
+          weight: 1,
+          keywords: [
+            "yield increases",
+            "increases",
+            "shifts right",
+            "moves right",
+            "more ammonia",
+            "goes up",
+          ],
+        },
+        {
+          id: "moles",
+          weight: 1,
+          keywords: [
+            "fewer moles",
+            "fewer molecules",
+            "four moles",
+            "two moles",
+            "side with fewer",
+            "fewer gas molecules",
+          ],
+        },
+        {
+          id: "principle",
+          weight: 1,
+          keywords: ["oppose", "opposes", "counteract", "le chatelier", "reduce the pressure"],
+        },
+      ],
+    },
+    workedSolution:
+      "There are four moles of gas on the left and two on the right. Raising the pressure shifts the position of equilibrium towards the side with fewer moles of gas, which opposes the change, so the yield of ammonia increases.",
+    misconceptions: {
+      temperature_argument:
+        "Explaining the shift with the exothermic forward reaction answers a temperature change, not a pressure change.",
+    },
+    canonicalAnswer:
+      "The yield increases, because the equilibrium shifts towards the side with fewer moles of gas to oppose the rise in pressure.",
+    nearMissAnswer: "The yield falls because the forward reaction gives out heat.",
+  },
+
+  // ---------------------------------------------------------------- biology
+  {
+    ref: "bio-nucleus-1",
+    kind: "retrieval",
+    subject: "biology",
+    topic: "cell biology",
+    skill: "cell-structure",
+    yearGroup: "Y9",
+    difficulty: 1,
+    stem: "Name the part of an animal cell that holds the genetic material.",
+    answerKey: { type: "exact", value: "nucleus", alternates: ["the nucleus"] },
+    workedSolution: "The nucleus holds the chromosomes, which carry the cell's DNA.",
+    misconceptions: {
+      mitochondria_named:
+        "Answering mitochondria names the site of aerobic respiration; almost all of the cell's DNA sits in the nucleus.",
+    },
+    canonicalAnswer: "nucleus",
+    nearMissAnswer: "mitochondria",
+  },
+  {
+    ref: "bio-photosynthesis-gas-1",
+    kind: "retrieval",
+    subject: "biology",
+    topic: "photosynthesis",
+    skill: "photosynthesis",
+    yearGroup: "Y9",
+    difficulty: 2,
+    stem: "Name the gas a leaf takes in during photosynthesis.",
+    answerKey: { type: "exact", value: "carbon dioxide", alternates: ["co2", "carbon-dioxide"] },
+    workedSolution:
+      "Photosynthesis uses carbon dioxide and water to make glucose, and releases oxygen.",
+    misconceptions: {
+      oxygen_named: "Answering oxygen names the gas the leaf releases, not the gas it takes in.",
+    },
+    canonicalAnswer: "carbon dioxide",
+    nearMissAnswer: "oxygen",
+  },
+  {
+    ref: "bio-destarch-1",
+    kind: "reasoning",
+    subject: "biology",
+    topic: "photosynthesis",
+    skill: "photosynthesis",
+    yearGroup: "Y9",
+    difficulty: 4,
+    stem: "A plant is kept in darkness for 48 hours before a starch test. Explain why.",
+    answerKey: {
+      type: "rubric",
+      passMark: 0.9,
+      criteria: [
+        {
+          id: "removes_starch",
+          weight: 1,
+          keywords: [
+            "use up the starch",
+            "uses up the starch",
+            "used up the starch",
+            "uses up its starch",
+            "remove the starch",
+            "removes the starch",
+            "destarch",
+            "no starch left",
+          ],
+        },
+        {
+          id: "valid_test",
+          weight: 1,
+          keywords: [
+            "fair test",
+            "valid",
+            "control",
+            "made during the experiment",
+            "made during the test",
+            "comes from the experiment",
+          ],
+        },
+      ],
+    },
+    workedSolution:
+      "Without light the plant cannot photosynthesise, so it uses up the starch it had already stored. Any starch found afterwards must have been made during the experiment, which makes the test fair.",
+    misconceptions: {
+      plant_harmed:
+        "Saying the darkness harms the plant confuses stopping photosynthesis with damaging the plant.",
+    },
+    canonicalAnswer:
+      "Darkness stops photosynthesis so the leaves use up the starch already stored, which makes it a fair test of what is made afterwards.",
+    nearMissAnswer: "The plant needs a rest from bright light before an experiment like this.",
+  },
+  {
+    ref: "bio-magnification-1",
+    kind: "practice",
+    subject: "biology",
+    topic: "microscopy",
+    skill: "microscopy-magnification",
+    yearGroup: "Y9",
+    difficulty: 4,
+    stem: "A cell appears 40 mm wide under a microscope at a total magnification of 200 times. Give the real width of the cell in micrometres.",
+    answerKey: { type: "numeric", value: 200, unit: "micrometres" },
+    workedSolution:
+      "Real size is image size divided by magnification: 40 divided by 200 is 0.2 mm. There are 1000 micrometres in a millimetre, so the width is 200 micrometres.",
+    misconceptions: {
+      unit_not_converted: "Answering 0.2 stops at millimetres; the question asks for micrometres.",
+      multiplied_instead: "Answering 8000 multiplies by the magnification instead of dividing.",
+    },
+    canonicalAnswer: "200",
+    nearMissAnswer: "0.2",
+  },
+  {
+    ref: "bio-enzyme-protein-1",
+    kind: "retrieval",
+    subject: "biology",
+    topic: "enzymes",
+    skill: "enzymes",
+    yearGroup: "Y10",
+    difficulty: 3,
+    stem: "Name the type of molecule that every enzyme is made from.",
+    answerKey: { type: "exact", value: "protein", alternates: ["proteins", "a protein"] },
+    workedSolution:
+      "Enzymes are proteins. The folded shape of the protein gives each enzyme an active site that fits one substrate.",
+    misconceptions: {
+      substrate_named:
+        "Answering carbohydrate names a substrate that many enzymes act on, not the enzyme itself.",
+    },
+    canonicalAnswer: "protein",
+    nearMissAnswer: "carbohydrate",
+  },
+  {
+    ref: "bio-denaturation-1",
+    kind: "transfer",
+    subject: "biology",
+    topic: "enzymes",
+    skill: "enzymes",
+    yearGroup: "Y13",
+    difficulty: 8,
+    variantOfRef: "bio-enzyme-protein-1",
+    stem: "An enzyme is heated to 80 degrees Celsius and stops working permanently. Name the change to the enzyme that explains this.",
+    answerKey: {
+      type: "exact",
+      value: "denaturation",
+      alternates: ["denatured", "it is denatured", "denaturing", "denatures", "the enzyme denatures"],
+    },
+    workedSolution:
+      "Heat breaks the bonds that hold the folded shape, so the active site changes shape permanently and the substrate no longer fits. The enzyme has been denatured.",
+    misconceptions: {
+      enzyme_killed:
+        "Saying the enzyme is killed treats it as alive; an enzyme is a molecule that loses its shape.",
+    },
+    canonicalAnswer: "denaturation",
+    nearMissAnswer: "it is killed",
+  },
+  {
+    ref: "bio-osmosis-1",
+    kind: "reasoning",
+    subject: "biology",
+    topic: "transport in cells",
+    skill: "osmosis",
+    yearGroup: "Y10",
+    difficulty: 5,
+    stem: "Potato cylinders are left in a concentrated sugar solution for an hour. State what happens to their mass.",
+    answerKey: {
+      type: "exact",
+      value: "decreases",
+      alternates: [
+        "decrease",
+        "decreased",
+        "it decreases",
+        "mass decreases",
+        "goes down",
+        "falls",
+        "loses mass",
+        "it loses mass",
+      ],
+    },
+    workedSolution:
+      "The solution outside is more concentrated than the cell contents, so water leaves the cells by osmosis and the cylinders lose mass.",
+    misconceptions: {
+      water_direction_reversed:
+        "Answering that the mass increases has water moving into the more concentrated solution; water moves the other way.",
+    },
+    canonicalAnswer: "decreases",
+    nearMissAnswer: "increases",
+  },
+  {
+    ref: "bio-punnett-1",
+    kind: "reasoning",
+    subject: "biology",
+    topic: "genetics",
+    skill: "genetics-punnett",
+    yearGroup: "Y10",
+    difficulty: 5,
+    stem: "Two parents are both heterozygous for a recessive condition, Bb crossed with Bb. Give the percentage of offspring expected to show the recessive phenotype.",
+    answerKey: { type: "numeric", value: 25 },
+    workedSolution:
+      "The cross gives BB, Bb, Bb and bb. Only bb shows the recessive phenotype, which is one outcome in four, or 25%.",
+    misconceptions: {
+      carriers_counted:
+        "Answering 50 counts the heterozygous offspring as showing the trait; only bb shows it.",
+    },
+    canonicalAnswer: "25",
+    nearMissAnswer: "50",
+  },
+  {
+    ref: "bio-punnett-transfer-1",
+    kind: "transfer",
+    subject: "biology",
+    topic: "genetics",
+    skill: "genetics-punnett",
+    yearGroup: "Y11",
+    difficulty: 6,
+    variantOfRef: "bio-punnett-1",
+    stem: "Cystic fibrosis is caused by a recessive allele. Both parents are carriers. Out of 100 children, give the number expected to have cystic fibrosis.",
+    answerKey: { type: "numeric", value: 25 },
+    workedSolution:
+      "Two carriers give a one in four chance that a child inherits both recessive alleles, so 25 of 100 children are expected to have the condition.",
+    misconceptions: {
+      carriers_as_affected:
+        "Answering 50 counts the carriers as affected; a carrier has one working allele and does not have the condition.",
+    },
+    canonicalAnswer: "25",
+    nearMissAnswer: "50",
+  },
+  {
+    ref: "bio-anaerobic-1",
+    kind: "reasoning",
+    subject: "biology",
+    topic: "respiration",
+    skill: "respiration",
+    yearGroup: "Y11",
+    difficulty: 5,
+    stem: "During hard exercise a muscle cell runs short of oxygen. Name the substance that then builds up in the muscle.",
+    answerKey: { type: "exact", value: "lactic acid", alternates: ["lactate"] },
+    workedSolution:
+      "Without enough oxygen the muscle respires anaerobically, breaking glucose down to lactic acid.",
+    misconceptions: {
+      aerobic_product_named:
+        "Answering carbon dioxide names the aerobic product; anaerobic respiration in muscle gives lactic acid.",
+    },
+    canonicalAnswer: "lactic acid",
+    nearMissAnswer: "carbon dioxide",
+  },
+  {
+    ref: "bio-plant-cell-1",
+    kind: "retrieval",
+    subject: "biology",
+    topic: "cell biology",
+    skill: "cell-structure",
+    yearGroup: "Y11",
+    difficulty: 3,
+    stem: "Which structure is found in a plant cell but not in an animal cell?",
+    answerKey: { type: "choice", index: 1 },
+    distractors: ["Ribosome", "Cell wall", "Mitochondrion", "Nucleus"],
+    workedSolution:
+      "Plant cells have a cellulose cell wall outside the membrane. Ribosomes, mitochondria and a nucleus are found in both cell types.",
+    misconceptions: {
+      plants_lack_mitochondria:
+        "Choosing mitochondrion assumes plants do not respire; plant cells respire and have mitochondria.",
+    },
+    canonicalAnswer: "Cell wall",
+    nearMissAnswer: "Mitochondrion",
+  },
+  {
+    ref: "bio-glucose-control-1",
+    kind: "reasoning",
+    subject: "biology",
+    topic: "homeostasis",
+    skill: "homeostasis-blood-glucose",
+    yearGroup: "Y12",
+    difficulty: 6,
+    stem: "Blood glucose rises after a meal. Explain how the body brings it back down.",
+    answerKey: {
+      type: "rubric",
+      passMark: 0.6,
+      criteria: [
+        { id: "hormone", weight: 1, keywords: ["insulin"] },
+        { id: "source", weight: 1, keywords: ["pancreas"] },
+        {
+          id: "effect",
+          weight: 1,
+          keywords: ["glycogen", "liver", "take up glucose", "takes up glucose", "stored", "absorb glucose"],
+        },
+      ],
+    },
+    workedSolution:
+      "The pancreas detects the rise and releases insulin. Insulin makes liver and muscle cells take glucose out of the blood and store it as glycogen, so blood glucose falls.",
+    misconceptions: {
+      glucagon_swapped:
+        "Naming glucagon reverses the pair; glucagon raises blood glucose and insulin lowers it.",
+    },
+    canonicalAnswer:
+      "The pancreas releases insulin, which makes liver and muscle cells take up glucose and store it as glycogen.",
+    nearMissAnswer: "The kidneys filter the extra sugar out of the blood.",
+  },
+  {
+    ref: "bio-transpiration-1",
+    kind: "reasoning",
+    subject: "biology",
+    topic: "transport in plants",
+    skill: "transport-xylem",
+    yearGroup: "Y12",
+    difficulty: 6,
+    stem: "Which change increases the rate of transpiration from a leaf?",
+    answerKey: { type: "choice", index: 2 },
+    distractors: ["Higher humidity", "Lower temperature", "Faster air movement", "Less light"],
+    workedSolution:
+      "Moving air carries water vapour away from the leaf surface, which keeps the concentration gradient steep, so transpiration speeds up.",
+    misconceptions: {
+      humidity_reversed:
+        "Choosing higher humidity reverses the gradient; damp air slows evaporation from the leaf.",
+    },
+    canonicalAnswer: "Faster air movement",
+    nearMissAnswer: "Higher humidity",
+  },
+  {
+    ref: "bio-antibiotic-resistance-1",
+    kind: "reasoning",
+    subject: "biology",
+    topic: "evolution",
+    skill: "natural-selection",
+    yearGroup: "Y12",
+    difficulty: 7,
+    stem: "Explain how a population of bacteria becomes resistant to an antibiotic.",
+    answerKey: {
+      type: "rubric",
+      passMark: 0.6,
+      criteria: [
+        { id: "variation", weight: 1, keywords: ["mutation", "mutations", "random change", "variation"] },
+        {
+          id: "selection",
+          weight: 1,
+          keywords: ["survive", "survives", "survived", "killed", "are killed", "selection pressure"],
+        },
+        {
+          id: "reproduction",
+          weight: 1,
+          keywords: ["reproduce", "reproduces", "pass on", "passed on", "offspring", "divide"],
+        },
+      ],
+    },
+    workedSolution:
+      "Bacteria in the population vary because of random mutation. When the antibiotic is used, the bacteria without resistance are killed and the resistant ones survive. The survivors reproduce and pass the allele on, so the resistant form becomes common.",
+    misconceptions: {
+      adaptation_on_demand:
+        "Saying the bacteria become resistant because they need to be treats the change as deliberate; resistance appears by chance mutation and is then selected.",
+    },
+    canonicalAnswer:
+      "A random mutation makes a few bacteria resistant, those bacteria survive the antibiotic while the rest are killed, and they reproduce so the resistant form spreads.",
+    nearMissAnswer: "The bacteria get used to the antibiotic over time and grow stronger.",
+  },
+  {
+    ref: "bio-antibody-cell-1",
+    kind: "retrieval",
+    subject: "biology",
+    topic: "immunity",
+    skill: "immune-response",
+    yearGroup: "Y13",
+    difficulty: 7,
+    stem: "Name the type of white blood cell that produces antibodies.",
+    answerKey: {
+      type: "exact",
+      value: "lymphocyte",
+      alternates: [
+        "lymphocytes",
+        "b lymphocyte",
+        "b lymphocytes",
+        "b-lymphocyte",
+        "b cell",
+        "b cells",
+        "plasma cell",
+        "plasma cells",
+      ],
+    },
+    workedSolution:
+      "B lymphocytes recognise an antigen and divide. Their plasma cells release antibodies against that antigen.",
+    misconceptions: {
+      phagocyte_named:
+        "Answering phagocyte names the cell that engulfs pathogens, not the one that makes antibodies.",
+    },
+    canonicalAnswer: "lymphocyte",
+    nearMissAnswer: "phagocyte",
+  },
+
+  // ---------------------------------------------------------------- english
+  {
+    ref: "eng-personification-1",
+    kind: "retrieval",
+    subject: "english",
+    topic: "language analysis",
+    skill: "language-devices",
+    yearGroup: "Y9",
+    difficulty: 2,
+    stem: "Name the device used in this line: The wind whispered through the trees.",
+    answerKey: { type: "exact", value: "personification", alternates: ["personified"] },
+    workedSolution:
+      "Whispering is something a person does. Giving a human action to the wind is personification.",
+    misconceptions: {
+      metaphor_default:
+        "Answering metaphor is close, but the line gives a human action to something non-human, which is personification.",
+    },
+    canonicalAnswer: "personification",
+    nearMissAnswer: "metaphor",
+  },
+  {
+    ref: "eng-personification-transfer-1",
+    kind: "transfer",
+    subject: "english",
+    topic: "language analysis",
+    skill: "language-devices",
+    yearGroup: "Y13",
+    difficulty: 7,
+    variantOfRef: "eng-personification-1",
+    stem: "Name the device used in this advertising line: Our engines wake the city.",
+    answerKey: { type: "exact", value: "personification", alternates: ["personified"] },
+    workedSolution:
+      "Waking is something a person does. Giving that action to the engines is personification.",
+    misconceptions: {
+      hyperbole_default:
+        "Answering hyperbole reads the line as exaggeration; the line gives a human action to the engines, which is personification.",
+    },
+    canonicalAnswer: "personification",
+    nearMissAnswer: "hyperbole",
+  },
+  {
+    ref: "eng-apostrophe-1",
+    kind: "retrieval",
+    subject: "english",
+    topic: "punctuation",
+    skill: "apostrophes",
+    yearGroup: "Y9",
+    difficulty: 3,
+    stem: "Which sentence uses the apostrophe correctly?",
+    answerKey: { type: "choice", index: 1 },
+    distractors: [
+      "The dog wagged it's tail.",
+      "The dogs' owners waited outside.",
+      "The dog's are barking.",
+      "Its' collar was red.",
+    ],
+    workedSolution:
+      "The owners belong to more than one dog, so the apostrophe goes after the plural s. The possessive its never takes an apostrophe.",
+    misconceptions: {
+      its_contraction:
+        "Choosing the tail option uses it's, which is short for it is; the possessive its takes no apostrophe.",
+    },
+    canonicalAnswer: "The dogs' owners waited outside.",
+    nearMissAnswer: "The dog wagged it's tail.",
+  },
+  {
+    ref: "eng-homophone-1",
+    kind: "practice",
+    subject: "english",
+    topic: "spelling",
+    skill: "spelling-homophones",
+    yearGroup: "Y9",
+    difficulty: 2,
+    stem: "Choose the correct word to fill the gap: The team lost ___ nerve.",
+    answerKey: { type: "choice", index: 1 },
+    distractors: ["they're", "their", "there", "theirs"],
+    workedSolution:
+      "The nerve belongs to the team, so the possessive their is correct. They're is short for they are, and there refers to a place.",
+    misconceptions: {
+      contraction_chosen:
+        "Choosing they're uses the contraction of they are; the sentence needs the possessive their.",
+    },
+    canonicalAnswer: "their",
+    nearMissAnswer: "they're",
+  },
+  {
+    ref: "eng-active-voice-1",
+    kind: "reasoning",
+    subject: "english",
+    topic: "grammar",
+    skill: "active-passive-voice",
+    yearGroup: "Y10",
+    difficulty: 4,
+    stem: "Rewrite this sentence in the active voice: The window was broken by the boy.",
+    answerKey: { type: "exact", value: "the boy broke the window" },
+    workedSolution:
+      "The active voice puts the person doing the action first, so the sentence becomes: The boy broke the window.",
+    misconceptions: {
+      agent_removed:
+        "Answering that the window broke drops the boy; the active voice keeps him as the subject.",
+    },
+    canonicalAnswer: "The boy broke the window.",
+    nearMissAnswer: "The window broke.",
+  },
+  {
+    ref: "eng-word-class-1",
+    kind: "practice",
+    subject: "english",
+    topic: "grammar",
+    skill: "word-class",
+    yearGroup: "Y10",
+    difficulty: 3,
+    stem: "Give the word class of quickly in this sentence: She quickly closed the door.",
+    answerKey: { type: "exact", value: "adverb", alternates: ["an adverb", "adverbs"] },
+    workedSolution: "Quickly describes how the verb closed was done, so it is an adverb.",
+    misconceptions: {
+      adjective_chosen:
+        "Answering adjective describes a word that modifies a noun; quickly modifies the verb closed.",
+    },
+    canonicalAnswer: "adverb",
+    nearMissAnswer: "adjective",
+  },
+  {
+    ref: "eng-analysis-sentence-1",
+    kind: "reasoning",
+    subject: "english",
+    topic: "language analysis",
+    skill: "essay-structure-point-evidence",
+    yearGroup: "Y10",
+    difficulty: 5,
+    stem: "Write one analytical sentence about the effect of the verb whispered in: The wind whispered through the trees.",
+    answerKey: {
+      type: "rubric",
+      passMark: 0.6,
+      criteria: [
+        { id: "device", weight: 1, keywords: ["personification", "personifies", "verb"] },
+        {
+          id: "effect",
+          weight: 1,
+          keywords: ["gentle", "quiet", "soft", "calm", "peaceful", "soothing", "secretive", "intimate"],
+        },
+        {
+          id: "reader",
+          weight: 1,
+          keywords: ["suggests", "implies", "creates", "conveys", "makes the reader", "gives the impression"],
+        },
+      ],
+    },
+    workedSolution:
+      "Name the device, then say what it makes the reader picture or feel. For example: the personification in whispered suggests a gentle, secretive movement rather than a violent one.",
+    misconceptions: {
+      feature_spotting:
+        "Naming the device without saying what it makes the reader think or feel stops at feature spotting.",
+    },
+    canonicalAnswer:
+      "The personification in whispered suggests a gentle, secretive movement rather than a violent one.",
+    nearMissAnswer: "The writer uses good description here which is very effective.",
+  },
+  {
+    ref: "eng-structure-effect-1",
+    kind: "reasoning",
+    subject: "english",
+    topic: "poetry",
+    skill: "unseen-poetry-analysis",
+    yearGroup: "Y11",
+    difficulty: 6,
+    stem: "A poem ends with a single-word line: Alone. Explain the effect of this structural choice.",
+    answerKey: {
+      type: "rubric",
+      passMark: 0.6,
+      criteria: [
+        {
+          id: "meaning",
+          weight: 1,
+          keywords: ["isolation", "isolated", "loneliness", "lonely", "separated", "cut off", "abandoned"],
+        },
+        {
+          id: "structure",
+          weight: 1,
+          keywords: [
+            "single word",
+            "one word",
+            "short line",
+            "final line",
+            "last line",
+            "white space",
+            "pause",
+            "stands apart",
+          ],
+        },
+        {
+          id: "reader",
+          weight: 1,
+          keywords: ["reader", "emphasis", "emphasises", "lingers", "draws attention", "stark"],
+        },
+      ],
+    },
+    workedSolution:
+      "The line is held apart by white space, so the eye rests on it. The single word acts out the isolation it describes, and because it is the last thing on the page it stays with the reader.",
+    misconceptions: {
+      structure_without_effect:
+        "Saying only that the line is short describes the choice without explaining what it does to the reader.",
+    },
+    canonicalAnswer:
+      "Ending on a single word leaves it standing apart on the page, and that isolation mirrors the speaker's state, so the reader is left holding it.",
+    nearMissAnswer: "It makes the poem finish quickly and sounds quite sad at the end.",
+  },
+  {
+    ref: "eng-soliloquy-1",
+    kind: "retrieval",
+    subject: "english",
+    topic: "drama",
+    skill: "shakespeare-context",
+    yearGroup: "Y11",
+    difficulty: 4,
+    stem: "Give the term fo
