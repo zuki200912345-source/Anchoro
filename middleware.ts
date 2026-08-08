@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server.js";
 import { createServerClient } from "@supabase/ssr";
 
 const GUARDED = ["/today", "/dashboard", "/leaderboard", "/profile", "/session", "/practice", "/onboarding"];
