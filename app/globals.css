@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+:root {
+  /* UI palette — §7 of the spec. Everything derives from these. */
+  --paper: #e4e7dc;
+  --ink: #16190f;
+  /* Spec said #6e7a63; darkened one step so small text passes WCAG AA
+     (4.7:1 on paper, 5.5:1 on chalk) — the spec's own accessibility floor. */
+  --slate: #5d6852;
+  --flag: #e01b54;
+  --gold: #f0b429;
+  --chalk: #f7f8f4;
+
+  /* Puzzle block fills — flat, saturated, never used for UI chrome. */
+  --block-1: #2e64e0; /* cobalt */
+  --block-2: #e8702a; /* orange */
+  --block-3: #23a55a; /* green */
+  --block-4: #17a2b0; /* teal */
+  --block-5: #a3b520; /* chartreuse */
+  --block-6: #d63b2f; /* red */
+
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-slate: var(--slate);
+  --color-flag: var(--flag);
+  --color-gold: var(--gold);
+  --color-chalk: var(--chalk);
+  --color-block-1: var(--block-1);
+  --color-block-2: var(--block-2);
+  --color-block-3: var(--block-3);
+  --color-block-4: var(--block-4);
+  --color-block-5: var(--block-5);
+  --color-block-6: var(--block-6);
+
+  --font-display: var(--font-bricolage);
+  --font-body: var(--font-public-sans);
+  --font-data: var(--font-martian-mono);
+
+  /* Radius roles: controls 2px, cards 10px, pills 999px. Nothing else. */
+  --radius-ctl: 2px;
+  --radius-card: 10px;
+
+  --shadow-plane: 4px 4px 0 0 rgb(22 25 15 / 0.12);
+  --shadow-plane-sm: 2px 2px 0 0 rgb(22 25 15 / 0.12);
+}
+
+body {
+  background-color: var(--paper);
+  /* 8px graph-paper grid, faint */
+  background-image: linear-gradient(
+      to right,
+      rgb(22 25 15 / 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgb(22 25 15 / 0.05) 1px, transparent 1px);
+  background-size: 8px 8px;
+  color: var(--ink);
+  font-family: var(--font-public-sans), sans-serif;
+}
+
+/* A card: solid chalk plane, 1px ink border, hard offset shadow. */
+.plane {
+  background: var(--chalk);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-plane);
+}
+
+.plane-sm {
+  background: var(--chalk);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-ctl);
+  box-shadow: var(--shadow-plane-sm);
+}
+
+/* Focus: visible, crimson, everywhere. */
+:focus-visible {
+  outline: 2px solid var(--flag);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+/* Numbers are always mono. Apply to timers, scores, XP, ranks. */
+.num {
+  font-family: var(--font-martian-mono), monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes deal-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes flash-correct {
+  0%,
+  100% {
+    background-color: var(--chalk);
+  }
+  40% {
+    background-color: color-mix(in srgb, var(--block-3) 25%, var(--chalk));
+  }
+}
+
+@keyframes flash-wrong {
+  0%,
+  100% {
+    background-color: var(--chalk);
+  }
+  40% {
+    background-color: color-mix(in srgb, var(--flag) 20%, var(--chalk));
+  }
+}
+
+@keyframes block-pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes line-clear {
+  to {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+}
+
+.deal-in {
+  animation: deal-in 0.28s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+
+/* Kill all motion when the user asked for none. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
