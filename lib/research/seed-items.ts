@@ -1727,4 +1727,232 @@ const INPUTS: SeedItemInput[] = [
     skill: "shakespeare-context",
     yearGroup: "Y11",
     difficulty: 4,
-    stem: "Give the term fo
+    stem: "Give the term for a speech in which a character alone on stage speaks their thoughts aloud.",
+    answerKey: { type: "exact", value: "soliloquy", alternates: ["a soliloquy", "soliloquies"] },
+    workedSolution:
+      "A soliloquy is spoken by a character alone on stage, so the audience hears thoughts the other characters do not.",
+    misconceptions: {
+      monologue_named:
+        "Answering monologue names a long speech delivered to others; a soliloquy is spoken alone.",
+    },
+    canonicalAnswer: "soliloquy",
+    nearMissAnswer: "monologue",
+  },
+  {
+    ref: "eng-semicolon-1",
+    kind: "reasoning",
+    subject: "english",
+    topic: "punctuation",
+    skill: "punctuation-semicolon",
+    yearGroup: "Y12",
+    difficulty: 5,
+    stem: "Which sentence uses a semicolon correctly?",
+    answerKey: { type: "choice", index: 1 },
+    distractors: [
+      "I was late; because the bus broke down.",
+      "The rain stopped; the match went ahead.",
+      "She packed a bag; and left.",
+      "We waited; hoping for news.",
+    ],
+    workedSolution:
+      "A semicolon joins two complete clauses. The rain stopped and the match went ahead can each stand alone as a sentence; the other options attach a phrase or a conjunction.",
+    misconceptions: {
+      clause_and_phrase:
+        "Choosing the waiting option joins a clause to a phrase; a semicolon needs a full clause on each side.",
+    },
+    canonicalAnswer: "The rain stopped; the match went ahead.",
+    nearMissAnswer: "She packed a bag; and left.",
+  },
+  {
+    ref: "eng-register-1",
+    kind: "reasoning",
+    subject: "english",
+    topic: "writing",
+    skill: "tone-register",
+    yearGroup: "Y12",
+    difficulty: 6,
+    stem: "A letter to a headteacher opens: Hey, so I reckon your rules are rubbish. Which change most improves the register?",
+    answerKey: { type: "choice", index: 1 },
+    distractors: [
+      "Add more exclamation marks",
+      "Replace the slang with formal phrasing",
+      "Make the sentence longer",
+      "Add a rhetorical question",
+    ],
+    workedSolution:
+      "Register comes from word choice. Replacing hey, reckon and rubbish with formal phrasing fits the audience, while length and punctuation do not change the register.",
+    misconceptions: {
+      length_as_formality:
+        "Choosing a longer sentence assumes formality is about length; register comes from word choice.",
+    },
+    canonicalAnswer: "Replace the slang with formal phrasing",
+    nearMissAnswer: "Make the sentence longer",
+  },
+  {
+    ref: "eng-anaphora-1",
+    kind: "reasoning",
+    subject: "english",
+    topic: "rhetoric",
+    skill: "rhetoric-analysis",
+    yearGroup: "Y13",
+    difficulty: 7,
+    stem: "A speech begins three consecutive sentences with the same clause: We will not stop. Name the device and explain its effect in one or two sentences.",
+    answerKey: {
+      type: "rubric",
+      passMark: 0.6,
+      criteria: [
+        { id: "device", weight: 1, keywords: ["anaphora"] },
+        {
+          id: "effect",
+          weight: 1,
+          keywords: [
+            "insistent",
+            "momentum",
+            "builds",
+            "determination",
+            "relentless",
+            "emphasis",
+            "urgency",
+            "memorable",
+            "drives",
+          ],
+        },
+        {
+          id: "audience",
+          weight: 1,
+          keywords: ["audience", "listener", "listeners", "reader", "persuade", "rally"],
+        },
+      ],
+    },
+    workedSolution:
+      "Repetition at the start of successive clauses is anaphora. The repeated opening builds momentum and drums the promise into the audience, so the speaker sounds unshakeable.",
+    misconceptions: {
+      repetition_imprecise:
+        "Calling it repetition is accurate but imprecise; repetition at the start of successive clauses is anaphora.",
+    },
+    canonicalAnswer:
+      "The device is anaphora, and the repeated opening builds momentum so the audience hears the promise as unshakeable.",
+    nearMissAnswer: "The writer says the same thing three times, which gets quite boring.",
+  },
+];
+
+// ---------------------------------------------------------------------------
+// Materialised bank
+// ---------------------------------------------------------------------------
+
+function toSeedItem(input: SeedItemInput): SeedItem {
+  const { variantOfRef, distractors, ...rest } = input;
+  return {
+    ...rest,
+    id: itemId(input.ref),
+    distractors: distractors ?? null,
+    variantOf: variantOfRef ? itemId(variantOfRef) : null,
+    rubric:
+      input.answerKey.type === "rubric"
+        ? {
+            criteria: input.answerKey.criteria,
+            passMark: input.answerKey.passMark ?? DEFAULT_PASS_MARK,
+          }
+        : null,
+    source: "authored",
+    verified: true,
+  };
+}
+
+export const SEED_ITEMS: SeedItem[] = INPUTS.map(toSeedItem);
+
+export const SEED_ITEM_COUNT = SEED_ITEMS.length;
+
+/** Every skill tag in the bank, in first-appearance order. */
+export const SEED_SKILLS: string[] = Array.from(new Set(SEED_ITEMS.map((i) => i.skill)));
+
+export function itemsBySkill(items: SeedItem[] = SEED_ITEMS): Map<string, SeedItem[]> {
+  const out = new Map<string, SeedItem[]>();
+  for (const item of items) {
+    const bucket = out.get(item.skill);
+    if (bucket) bucket.push(item);
+    else out.set(item.skill, [item]);
+  }
+  return out;
+}
+
+export function skillsBySubject(items: SeedItem[] = SEED_ITEMS): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  for (const item of items) {
+    const bucket = (out[item.subject] ??= []);
+    if (!bucket.includes(item.skill)) bucket.push(item.skill);
+  }
+  return out;
+}
+
+/**
+ * Interleaves a set of items so consecutive questions come from different
+ * skills, and from different subjects where the bank allows (N7, A2). Blocking
+ * by skill is what the interleaving evidence argues against, so the default
+ * ordering of any set handed to a student should go through this.
+ *
+ * Deterministic: same input order in, same order out.
+ */
+export function interleave(items: SeedItem[]): SeedItem[] {
+  const buckets = [...itemsBySkill(items).values()];
+  const out: SeedItem[] = [];
+  let lastSubject: string | null = null;
+
+  while (out.length < items.length) {
+    // Prefer a skill whose subject differs from the one just served.
+    let pick = buckets.findIndex((b) => b.length > 0 && b[0].subject !== lastSubject);
+    if (pick === -1) pick = buckets.findIndex((b) => b.length > 0);
+    if (pick === -1) break;
+
+    const item = buckets[pick].shift() as SeedItem;
+    out.push(item);
+    lastSubject = item.subject;
+    // Rotate the chosen bucket to the back so skills keep alternating.
+    buckets.push(buckets.splice(pick, 1)[0]);
+  }
+
+  return out;
+}
+
+/** The row shape of `public.items`. Used by the seed SQL and any seeding script. */
+export interface ItemRow {
+  id: string;
+  kind: ItemKind;
+  subject: string;
+  topic: string;
+  skill: string;
+  year_group: string;
+  difficulty: number;
+  stem: string;
+  answer_key: AnswerKey;
+  rubric: { criteria: RubricCriterion[]; passMark: number } | null;
+  worked_solution: string;
+  distractors: string[] | null;
+  common_misconceptions: Record<string, string>;
+  source: string;
+  verified: boolean;
+  variant_of: string | null;
+}
+
+export function toItemRow(item: SeedItem): ItemRow {
+  return {
+    id: item.id,
+    kind: item.kind,
+    subject: item.subject,
+    topic: item.topic,
+    skill: item.skill,
+    year_group: item.yearGroup,
+    difficulty: item.difficulty,
+    stem: item.stem,
+    answer_key: item.answerKey,
+    rubric: item.rubric,
+    worked_solution: item.workedSolution,
+    distractors: item.distractors,
+    common_misconceptions: item.misconceptions,
+    source: item.source,
+    verified: item.verified,
+    variant_of: item.variantOf,
+  };
+}
+
+export const SEED_ITEM_ROWS: ItemRow[] = SEED_ITEMS.map(toItemRow);
